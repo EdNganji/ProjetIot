@@ -1,0 +1,9 @@
+{
+    "java.project.sourcePaths": ["src"],
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Users\\Daniel NGANJIP\\Downloads\\postgresql-42.6.0.jar",
+        "c:\\Users\\Daniel NGANJIP\\Downloads\\jar_files\\gson-2.8.2.jar"
+    ]
+}
