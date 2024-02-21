@@ -3,6 +3,7 @@ package Ressources;
 // Classe représentant un capteur
 class Capteur extends ObjetConnecte {
     private String typeMesure;
+    private int nbreChannel;
 
     public Capteur(String nom, String adresseIP, String typeMesure) {
         super(nom, adresseIP);
