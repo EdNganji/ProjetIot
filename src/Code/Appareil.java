@@ -14,19 +14,18 @@ import java.util.InputMismatchException;
 
 public class Appareil {
 	
-	private List<Capteur> listCapteurs;
-	private List<Actionneur> listActionneurs;
+	public List<Capteur> listCapteurs;
+	public List<Actionneur> listActionneurs;
 
     public int id;
 	public String ipAdress;
     public String name;
     public String type;
     public String etatFonct;
-	public Database datab;
+	
 
-	public Appareil(Database database){
+	public Appareil(){
 
-		this.datab = database;
 		listCapteurs = new ArrayList<>();
 		listActionneurs = new ArrayList<>();
 	}
@@ -74,45 +73,13 @@ public class Appareil {
 
 	}
 	
-	public void addAppareil( Scanner scanner, Appareil appareil) {
+	
 
-		appareil = appareilInfo(scanner, appareil);
+	public void Infos() {
+
+		System.out.println(name + "   " + ipAdress + "      " + type + "   " + etatFonct + "\n");
   
-		datab.insertvalues( appareil);
-	}
-	
-	public void listAppareil() {
-		System.out.println("\n------------------------------");
-
-		clearConsole();
-		datab.getAppareil();
 		
-	}
-	
-	public void updateAppareil( Scanner scanner, Appareil appareil) {
-		System.out.println("\n------------------------------");
-
-		clearConsole();
-		datab.getAppareil();
-		System.out.println("Entrez l'id de l'appareil à modifier");
-		int id = Integer.parseInt(scanner.next());
-		System.out.println("Entrez le nouvel etat de fonctionnement");
-		String etat = scanner.next();
-
-		datab.updateValues(id, etat);
-		
-	}
-	
-	public void dropAppareil( Scanner scanner) {
-		
-		System.out.println("\n------------------------------");
-
-		clearConsole();
-		datab.getAppareil();
-		System.out.println("Entrez l'id de l'appareil à supprimer");
-		int id = Integer.parseInt(scanner.next());
-		datab.dropAppareil(id);
-
 	}
 	
 	
@@ -137,39 +104,190 @@ public class Appareil {
         
     }
 
-	//Gestion liste Capteurs
+					//Gestion liste Capteurs
+
 
 	// ajouter un capteur à la liste
-    public void addCapteur(Capteur capteur) {
+    public void addCapteur(Scanner scanner, Capteur capteur, Database datab) {
+
+		capteur = capteur.capteurInfo(scanner, capteur);
+  
+		 long id = datab.insertvaluesCapteur(capteur,);
+
+		 capteur.id = (int) id; 
+
         listCapteurs.add(capteur);
     }
 
-    //  supprimer un capteur de la liste
-    public void dropCapteur(Capteur capteur) {
-        listCapteurs.remove(capteur);
+	public void addcapteur( ) {
+
+		
+
+	}
+
+
+	
+	// afficher les noms de tous les capteurs de la liste
+	public void afficherCapteurs() {
+		for (Capteur capteur : listCapteurs) {
+			System.out.println(capteur.id + "  - " + capteur.name);
+        }
+		
+        if  (listCapteurs.isEmpty()) {
+			System.out.println("Aucun appareil dans cette liste");
+		}
     }
-
-    // récupérer tous les capteurs de la liste
-    public List<Capteur> getCapteur() {
-        return listCapteurs;
+	
+    // Selectionner un capteur de la liste
+    public Capteur SelectCapteur(Scanner scanner){
+		
+		afficherCapteurs();
+		
+        System.out.println("Entrez l'id du capteur à sélectionner");
+		int id = Integer.parseInt(scanner.next()); 
+        for (Capteur capteur : listCapteurs) {
+			if (capteur.id == id){
+				return capteur;
+            }
+        }
+		
+        return null; // si aucun appareil ne correspond
     }
+	
+	public int getPosition(Capteur capteur){
+		
+		int position = listCapteurs.indexOf(capteur);
+        return position; 
+    }
+	
+	//  supprimer un capteur de la liste
+	public void dropCapteur(Capteur capteur, Database datab) {
 
-	// Gestion liste Actionneurs
+		datab.dropCapteur(capteur);
 
-	// ajouter un capteur à la liste
-    public void addActionneur(Actionneur actionneur) {
+		listCapteurs.remove(capteur);
+	}
+
+	public void updateCapteur( Scanner scanner, Capteur capteur, int position, Database datab) {
+		System.out.println("\n------------------------------");
+
+		capteur.Infos();
+
+		// datab.getAppareil();
+		
+		System.out.println("Entrez le nouveau type de Mesure");
+		String type = scanner.next();
+		System.out.println("Entrez le nouveau nombre de channels");
+		int nbChan = scanner.nextInt();
+
+		capteur.typeMesure = type;
+		capteur.nbreChannel  = nbChan;
+		
+		datab.updateValuesCapteur(capteur);
+
+		listCapteurs.set(position, capteur);
+
+		System.out.println("Valeurs modifiées");
+
+		
+	}
+
+	public void linkChannel( Scanner scanner, Capteur capteur, int position, ListeAppareils list) {
+		
+		
+		System.out.println("Entrez l'id du channel à lier'");
+		int id = scanner.nextInt();
+
+		// datab.link(capteur.id, id);
+
+		// Verifier le nombre de channels 
+
+		System.out.println("Entrez le nouveau nombre de channels");
+		
+  
+		// datab.insertvalues( capteur);
+	}
+	
+
+				// Gestion liste Actionneurs
+
+
+
+	// ajouter un Actionneur à la liste
+    public void addActionneur(Scanner scanner, Actionneur actionneur, Database datab) {
+
+		actionneur = actionneur.ActionneurInfo(scanner, actionneur);
+  
+		 long id = datab.insertvaluesActionneur(actionneur, this.id);
+
+		 actionneur.id = (int) id; 
+
         listActionneurs.add(actionneur);
+
     }
 
-    //  supprimer un capteur de la liste
-    public void supprimerAppareil(Actionneur actionneur) {
+    
+	 // afficher les noms de tous les Actionneurs de la liste
+	public void afficherActionneurs() {
+        for (Actionneur actionneur:  listActionneurs) {
+            System.out.println(actionneur.id + "  - " + actionneur.name);
+        }
+
+        if  (listActionneurs.isEmpty()) {
+            System.out.println("Aucun appareil dans cette liste");
+            }
+    }
+
+    // Selectionner un actionneur de la liste
+
+    public Actionneur SelectActionneur(Scanner scanner){
+        
+        afficherActionneurs();
+
+        System.out.println("Entrez l'id du actionneur à sélectionner");
+		int id = Integer.parseInt(scanner.next()); 
+        for (Actionneur actionneur: listActionneurs) {
+            if (actionneur.id == id){
+                return actionneur;
+            }
+        }
+
+        return null; // si aucun appareil ne correspond
+    }
+
+	public int getPositionA(Actionneur actionneur){
+        
+        int position = listActionneurs.indexOf(actionneur);
+        return position; 
+    }
+
+	//  supprimer un capteur de la liste
+    public void dropAppareil(Actionneur actionneur, Database datab) {
+
+		datab.dropActionneur(actionneur);
         listActionneurs.remove(actionneur);
     }
 
-    // récupérer tous les capteurs de la liste
-    public List<Actionneur> getAppareils() {
-        return listActionneurs;
-    }
+
+	public void updateActionneur( Scanner scanner, Actionneur actionneur, int position, Database datab) {
+		System.out.println("\n------------------------------");
+
+		
+		// datab.getAppareil();
+		
+		System.out.println("Entrez le nouveau type d'Action'");
+		String type = scanner.next();
+		
+
+		actionneur.typeAction = type;
+		
+		
+		datab.updateValuesActionneur(actionneur);
+
+		listActionneurs.set(position, actionneur);
+
+		System.out.println("Valeurs modifiées");
+	}
 
 	public void setID(int id){
 

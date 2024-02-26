@@ -3,9 +3,9 @@ package Ressources;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import Code.capteur;
-import Code.Appareil;
-import Code.Validation;
+
+import Code.*;
+
 
 // Classe représentant un capteur
 public class Capteur extends Composante {
@@ -59,46 +59,17 @@ public class Capteur extends Composante {
 
 	}
 	
-	public void addcapteur( Scanner scanner, Capteur capteur) {
+	
+	public void Infos() {
 
-		capteur = capteurInfo(scanner, capteur);
+		System.out.println(name + "  "  + typeMesure + "  " + nbreChannel + "\n");
   
-		// datab.insertvalues( capteur);
-	}
-
-    public void listCapteur() {
-		System.out.println("\n------------------------------");
-
-		// datab.getAppareil();
 		
 	}
 	
-	public void updateCapteur( Scanner scanner, Capteur capteur) {
-		System.out.println("\n------------------------------");
 
-		
-		// datab.getAppareil();
-		System.out.println("Entrez l'id du capteur à modifier");
-		int id = Integer.parseInt(scanner.next());
-		System.out.println("Entrez le nouvel etat de fonctionnement");
-		String etat = scanner.next();
 
-		// datab.updateValues(id, etat);
-		
-	}
-	
-	public void dropAppareil( Scanner scanner) {
-		
-		System.out.println("\n------------------------------");
 
-		clearConsole();
-		datab.getAppareil();
-		System.out.println("Entrez l'id de l'appareil à supprimer");
-		int id = Integer.parseInt(scanner.next());
-		datab.dropAppareil(id);
-
-	}
-	
 
 }
 

@@ -9,6 +9,9 @@ import Data.Database;
 public class App {
     public static void main(String[] args) throws Exception {
         
+
+        int position1;
+        int  position2;
        
 
         Database datab = new Database();
@@ -19,7 +22,17 @@ public class App {
 
          Scanner scanner = new Scanner(System.in);
 
-         Appareil appareil = new Appareil(datab);
+         Appareil appareil = new Appareil();
+
+         Capteur capteur = new Capteur(null, null, 1);
+
+         Actionneur actionneur = new Actionneur(null, null);
+
+         ListeAppareils listApp = new ListeAppareils();
+
+         ListeChannels listChan = new ListeChannels();
+
+         ListeLectures listeLec = new ListeLectures();
         
             try{
 
@@ -45,12 +58,14 @@ public class App {
             
                         switch (choice) {
                             case 1:
-                                appareil.addAppareil( scanner, appareil);
+
+                                listApp.addAppareil(scanner, appareil, datab);
                                 
                                 break;
 
                             case 2:
-                                appareil.listAppareil();
+
+                                listApp.afficherAppareils();
                                 break;
 
                             case 3:
@@ -60,18 +75,20 @@ public class App {
                             System.out.println("2. Gestion des Capteurs");
                             System.out.println("3. Gestion des Actionneurs");
                             System.out.println("4. Quitter");
+
+                            appareil = listApp.SelectAppareil(scanner);
+                            position1 = listApp.getPosition(appareil);
+
                 
                             switch (choice) {
                                 case 1:
+
+                                listApp.updateAppareil(scanner, appareil, position1, datab);
                                     
                                     
                                     break;
     
                                 case 2:
-                                    
-                                    break;
-    
-                                case 3:
                                     
                                     System.out.println("Gestion des Capteurs");
                                     System.out.println("1. Ajouter un Capteur");
@@ -82,19 +99,35 @@ public class App {
 
                                     switch (choice) {
                                         case 1:
+                                        System.out.println("Ajouter un Capteur");
+
+                                        appareil.addCapteur(scanner, capteur, datab);
                                             
                                             
                                             break;
 
                                         case 2:
+                                        System.out.println("Afficher tous les capteurs\n");
+
+                                        appareil.showCapteurs();
                                             
                                             break;
 
                                         case 3:
+                                        System.out.println("modifier les informations d'un capteur\n");
+
+                                        capteur = appareil.SelectCapteur(scanner);
+                                        position2 =  appareil.getPosition(capteur);
+                                        appareil.updateCapteur(scanner, capteur, position2, datab);
                                             
 
                                         case 4:
-                                        
+                                        System.out.println("Supprimer un capteur\n");
+
+                                        capteur = appareil.SelectCapteur(scanner);
+                                        position2 =  appareil.getPosition(capteur);
+                                        appareil.dropCapteur(capteur, datab);
+
                                             break;
 
                                         case 5:
@@ -108,7 +141,7 @@ public class App {
                                 
                                     break;
     
-                                case 4:
+                                case 3:
                                     
                                     System.out.println("Gestion des Actionneurs");
                                     System.out.println("1. Ajouter un Actionneur");
@@ -119,15 +152,24 @@ public class App {
 
                                     switch (choice) {
                                         case 1:
+                                        System.out.println("Ajouter un Actionneur");
+
+                                        appareil.addActionneur(scanner, actionneur, datab);
                                             
                                             
                                             break;
 
                                         case 2:
+                                        System.out.println("Afficher tous les Actionneurs");
+
+                                        appareil.showActionneurs();
                                             
                                             break;
 
                                         case 3:
+                                        System.out.println("modifier les informations d'un Actionneur");
+                                    
+
                                             
 
                                         case 4:
@@ -142,6 +184,9 @@ public class App {
                                             System.out.println("Choix non valide. Veuillez choisir une option valide.");
                                             
                                     }
+                                    break;
+                                case 4:
+                                    
                                     break;
                                     
                                 default:

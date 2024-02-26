@@ -20,7 +20,7 @@ public class Channel {
         this.unit = unit;
     }
 
-    public void AddChannel(Scanner scanner){
+    public Channel ChannelInfos(Scanner scanner, Channel channel){
 
         
 
@@ -29,7 +29,7 @@ public class Channel {
     
             while (tag == false) {
                 System.out.print("Nom du channel : ");
-                name = scanner.next();
+                channel.name = scanner.next();
                 tag = Validation.validText(name, 25);
             }
             
@@ -37,7 +37,7 @@ public class Channel {
     
             while (tag == false) {
                 System.out.print("Unité : ");
-                unit = scanner.next();
+                channel.unit = scanner.next();
                 tag = Validation.validText(unit, 10);
             }
             
@@ -45,8 +45,8 @@ public class Channel {
         } catch (InputMismatchException e) {
             System.out.println("Erreur : Entrée invalide. Assurez-vous d'entrer une valeur adequate");
         }
-    
-            
+
+        return channel; 
     
     }
 
