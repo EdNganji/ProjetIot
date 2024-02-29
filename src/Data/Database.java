@@ -120,7 +120,7 @@ public class Database{
 
         Connection conn = connect.connect2();
 
-        String SQL1 = "CREATE TABLE IF NOT EXISTS Appareils"
+        String SQL1 = "CREATE TABLE IF NOT EXISTS appareil"
                 + "("
                 +  "  id serial PRIMARY KEY,"
                 +  "  adresseIp character(15) NOT NULL ,"
@@ -131,7 +131,7 @@ public class Database{
                 + ")";
         
 
-        String SQL2 = "CREATE TABLE IF NOT EXISTS Capteur"
+        String SQL2 = "CREATE TABLE IF NOT EXISTS capteur"
                 + "("
                 +  "  id serial PRIMARY KEY,"
                 +   " name character varying NOT NULL,"
@@ -140,10 +140,10 @@ public class Database{
                 +   " nbreChannel integer  DEFAULT 1,"
                 +   " active boolean DEFAULT TRUE"
                 +   " CONSTRAINT idApparreil FOREIGN KEY (idApparreil)"
-                +   " REFERENCES Appareils (id)"
+                +   " REFERENCES appareils (id)"
                 + ")";        
 
-        String SQL3 = "CREATE TABLE IF NOT EXISTS Actionneur"
+        String SQL3 = "CREATE TABLE IF NOT EXISTS actionneur"
                 + "("
                 +  "  id serial PRIMARY KEY,"
                 +   " name character varying NOT NULL,"
@@ -152,11 +152,11 @@ public class Database{
                 +   " puissance integer  NOT NULL,"
                 +   " active boolean DEFAULT TRUE"
                 +   " CONSTRAINT idApparreil FOREIGN KEY (idApparreil)"
-                +   " REFERENCES Appareils (id)"
+                +   " REFERENCES appareils (id)"
                 + ")";
                 
 
-        String SQL4 = "CREATE TABLE IF NOT EXISTS Channel"
+        String SQL4 = "CREATE TABLE IF NOT EXISTS channel"
                 + "("
                 +  "  id serial PRIMARY KEY,"
                 +  "  name character varying NOT NULL,"
@@ -165,20 +165,20 @@ public class Database{
                 + ")";
 
 
-        String SQL5 = "CREATE TABLE IF NOT EXISTS Attributions"
+        String SQL5 = "CREATE TABLE IF NOT EXISTS attribution"
                 + "("
                 +  "  id serial PRIMARY KEY,"
                 +  "  idCapteur integer NOT NULL,"
                 +   " idChannel integer NOT NULL,"
                 +   " active boolean DEFAULT TRUE,"
                 +   " CONSTRAINT idCapteur FOREIGN KEY (idCapteur)"
-                +   " REFERENCES Capteur (id),"
+                +   " REFERENCES capteur (id),"
                 +   " CONSTRAINT idChannel FOREIGN KEY (idChannel)"
-                +   " REFERENCES Channel (id)"
+                +   " REFERENCES channel (id)"
                 + ")";
 
 
-        String SQL6 = "CREATE TABLE IF NOT EXISTS Lectures"
+        String SQL6 = "CREATE TABLE IF NOT EXISTS lecture"
                 + "("
                 +  "  id serial PRIMARY KEY,"
                 +  "  idCapteur integer NOT NULL,"
@@ -188,9 +188,9 @@ public class Database{
                 +   " heure_envoi time without time zone NOT NULL DEFAULT CURRENT_TIME,"
                 +   " active boolean DEFAULT TRUE,"
                 +   " CONSTRAINT idCapteur FOREIGN KEY (idCapteur)"
-                +   " REFERENCES Capteur (id),"
+                +   " REFERENCES capteur (id),"
                 +   " CONSTRAINT idChannel FOREIGN KEY (idChannel)"
-                +   " REFERENCES Channel (id)"
+                +   " REFERENCES channel (id)"
                 + ")";
          
             
@@ -214,7 +214,7 @@ public class Database{
 
            Connection conn = connect.connect2();
 
-            String SQL = "INSERT INTO Appareils ( \"name\", \"adresseip\" , \"type\", \"etatfonct\") "
+            String SQL = "INSERT INTO appareil ( \"name\", \"adresseip\" , \"type\", \"etatfonct\") "
                     + "VALUES(?,?,?,?)";
     
             long id = 0;
@@ -254,7 +254,7 @@ public class Database{
             Connection conn = connect.connect2();
             
         
-             String SQL = " UPDATE Appareils SET  type = ? , etatfonct = ? WHERE id = ? ";
+             String SQL = " UPDATE appareil SET  type = ? , etatfonct = ? WHERE id = ? ";
      
              long iid = 0;
      
@@ -291,7 +291,7 @@ public class Database{
 
         Connection conn = connect.connect2();
 
-        String SQL = "UPDATE Appareils SET active = ? WHERE id = ?";
+        String SQL = "UPDATE appareil SET active = ? WHERE id = ?";
 
             
 
@@ -707,22 +707,21 @@ public class Database{
 
 
        //Enregistrer une Lecture
-       /*  public long insertvaluesLecture(Lecture lecture) {
+         public long insertvaluesLecture(Data data) {
 
             Connection conn = connect.connect2();
  
-             String SQL = "INSERT INTO actionneur ( \"name\", \"idappareil\" , \"typeaction\", \"puissance\") "
-                     + "VALUES(?,?,?,?)"; 
+             String SQL = "INSERT INTO Lectures ( \"idcapteur\", \"idchannel\" , \"readvalue\") "
+                             + "VALUES(?,?,?)"; 
              long id = 0;
 
              try (
              PreparedStatement pstmt = conn.prepareStatement(SQL,
                      Statement.RETURN_GENERATED_KEYS)) {
      
-                 pstmt.setString(1, actionneur.name);
-                 pstmt.setInt(2, idApp);
-                 pstmt.setString(3, actionneur.typeAction);
-                 pstmt.setInt(4, 0);
+                 pstmt.setInt(1, data.idCapteur);
+                 pstmt.setInt(2, data.idChannel);
+                 pstmt.setDouble(3, data.readValue);
      
                  int affectedRows = pstmt.executeUpdate();
                  // check the affected rows 
@@ -741,9 +740,10 @@ public class Database{
                  System.out.println(ex.getMessage());
              }
              return id;
-         } */
+         } 
 
-         public void getLectures() {
+
+         public ListeLectures getLectures(ListeLectures list) {
 
             Connection conn = connect.connect2();
     
@@ -762,10 +762,13 @@ public class Database{
             Statement stmt = conn.createStatement();
                     ResultSet rs = stmt.executeQuery(SQL)) {
                 // display actor information
-                displayLectures(rs);
+                //displayLectures(rs);
+                list = recordLectures(rs);
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
             }
+
+            return list;
         }
     
         
@@ -782,14 +785,14 @@ public class Database{
             }
         }
 
-        public ListeLectures recordLectures(ResultSet rs, Lecture lecture) throws SQLException {
+        public ListeLectures recordLectures(ResultSet rs) throws SQLException {
 
             ListeLectures list = new ListeLectures() ;
+            Lecture lecture = new Lecture();
 
             while (rs.next()) {
 
                         lecture.id = rs.getInt("id") ;
-                        lecture.idCapteur = rs.getInt("id capteur") ;
                         lecture.nameCap = rs.getString("nom capteur") ;
                         lecture.nameCha =  rs.getString("nom channel") ;
                         lecture.readValue =  rs.getDouble("Valeur") ;

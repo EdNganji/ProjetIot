@@ -55,6 +55,8 @@ public class App {
                         System.out.println("3. modifier un appareil");
                         System.out.println("4. Supprimer un appareil");
                         System.out.println("5. Quitter");
+
+                        choice = scanner.nextInt();
             
                         switch (choice) {
                             case 1:
@@ -79,6 +81,8 @@ public class App {
                             appareil = listApp.SelectAppareil(scanner);
                             position1 = listApp.getPosition(appareil);
 
+                            choice = scanner.nextInt();
+
                 
                             switch (choice) {
                                 case 1:
@@ -96,6 +100,8 @@ public class App {
                                     System.out.println("3. modifier les informations d'un capteur");
                                     System.out.println("4. Supprimer un capteur");
                                     System.out.println("5. Quitter");
+
+                                    choice = scanner.nextInt();
 
                                     switch (choice) {
                                         case 1:
@@ -150,6 +156,8 @@ public class App {
                                     System.out.println("4. Supprimer un Actionneur");
                                     System.out.println("5. Quitter");
 
+                                    choice = scanner.nextInt();
+
                                     switch (choice) {
                                         case 1:
                                         System.out.println("Ajouter un Actionneur");
@@ -196,7 +204,11 @@ public class App {
                                 break;
 
                             case 4:
-                            appareil.dropAppareil(scanner);
+
+                            appareil = listApp.SelectAppareil(scanner);
+                            position1 = listApp.getPosition(appareil);
+
+                            listApp.dropAppareil(appareil, datab);
                                 break;
 
                             case 5:
@@ -217,22 +229,31 @@ public class App {
                         System.out.println("3. modifier les informations d'un channel");
                         System.out.println("4. Supprimer un channel");
                         System.out.println("5. Quitter");
+
+                        choice = scanner.nextInt();
             
                     
                         switch (choice) {
                             case 1:
                                 
-                                
+                            System.out.println("Ajouter un channel");
+
                                 break;
 
                             case 2:
+
+                            System.out.println("Afficher tous les channels");
                                 
                                 break;
 
                             case 3:
+
+                            System.out.println("modifier les informations d'un channel");
                                 
 
                             case 4:
+
+                            System.out.println("Supprimer un channel");
                             
                                 break;
 
@@ -251,10 +272,15 @@ public class App {
                         System.out.println("Gestion des Lectures");
                         System.out.println("1. Consulter les lectures");
                         System.out.println("2. Quitter");
+                        
+                        listeLec = datab.getLectures(listeLec);
+
+                        choice = scanner.nextInt();
             
                         switch (choice) {
                             case 1:
                             System.out.println(" Consulter les lectures");
+                            listeLec.Afficher();
                                 break;
         
                             case 2:
@@ -281,42 +307,6 @@ public class App {
 
 
 
-
-                System.out.println("1. Ajouter un appareil");
-                System.out.println("2. Afficher tous les appareils");
-                System.out.println("3. modifier les informations d'un appareil");
-                System.out.println("4. Supprimer un appareil");
-                System.out.println("5. Quitter");
-    
-                int choice = scanner.nextInt();
-    
-                switch (choice) {
-                    case 1:
-                        appareil.addAppareil( scanner, appareil);
-                        
-                        break;
-
-                    case 2:
-                        appareil.listAppareil();
-                        break;
-
-                    case 3:
-                        appareil.updateAppareil(scanner, appareil);
-                        break;
-
-                    case 4:
-                       appareil.dropAppareil(scanner);
-                        break;
-
-                    case 5:
-                        System.out.println("Au revoir");
-                        System.exit(0);
-                        break;
-                        
-                    default:
-                        System.out.println("Choix non valide. Veuillez choisir une option valide.");
-                        
-                }
 
                
             }

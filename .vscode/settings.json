@@ -4,6 +4,8 @@
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
         "c:\\Users\\Daniel NGANJIP\\Downloads\\postgresql-42.6.0.jar",
-        "c:\\Users\\Daniel NGANJIP\\Downloads\\jar_files\\gson-2.8.2.jar"
+        "c:\\Users\\Daniel NGANJIP\\Downloads\\jar_files\\gson-2.8.2.jar",
+        "c:\\Users\\Daniel NGANJIP\\Desktop\\CCNB\\IDO 2\\Java\\projet\\Mqtt\\src\\org.eclipse.paho.client.mqttv3-1.2.5.jar",
+        "c:\\Users\\Daniel NGANJIP\\Downloads\\json-20240205.jar"
     ]
 }

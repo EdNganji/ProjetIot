@@ -127,8 +127,8 @@ public class Appareil {
 
 
 	
-	// afficher les noms de tous les capteurs de la liste
-	public void afficherCapteurs() {
+	// show les noms de tous les capteurs de la liste
+	public void showCapteurs() {
 		for (Capteur capteur : listCapteurs) {
 			System.out.println(capteur.id + "  - " + capteur.name);
         }
@@ -141,12 +141,12 @@ public class Appareil {
     // Selectionner un capteur de la liste
     public Capteur SelectCapteur(Scanner scanner){
 		
-		afficherCapteurs();
+		showCapteurs();
 		
-        System.out.println("Entrez l'id du capteur à sélectionner");
-		int id = Integer.parseInt(scanner.next()); 
+        System.out.println("Entrez le nom du capteur à sélectionner");
+		String name = scanner.next(); 
         for (Capteur capteur : listCapteurs) {
-			if (capteur.id == id){
+			if (capteur.name == name){
 				return capteur;
             }
         }
@@ -227,8 +227,8 @@ public class Appareil {
     }
 
     
-	 // afficher les noms de tous les Actionneurs de la liste
-	public void afficherActionneurs() {
+	 // show les noms de tous les Actionneurs de la liste
+	public void showActionneurs() {
         for (Actionneur actionneur:  listActionneurs) {
             System.out.println(actionneur.id + "  - " + actionneur.name);
         }
@@ -242,12 +242,12 @@ public class Appareil {
 
     public Actionneur SelectActionneur(Scanner scanner){
         
-        afficherActionneurs();
+        showActionneurs();
 
-        System.out.println("Entrez l'id du actionneur à sélectionner");
-		int id = Integer.parseInt(scanner.next()); 
+        System.out.println("Entrez le nom de l'actionneur à sélectionner");
+		String name = scanner.next(); 
         for (Actionneur actionneur: listActionneurs) {
-            if (actionneur.id == id){
+            if (actionneur.name == name){
                 return actionneur;
             }
         }

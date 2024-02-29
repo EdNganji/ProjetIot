@@ -51,7 +51,7 @@ SET column1 = ?,
     ...
 WHERE id = ?;
 
-CREATE TABLE IF NOT EXISTS Appareils
+CREATE TABLE IF NOT EXISTS Appareil
 ( 
     id serial PRIMARY KEY ,
 	adresseIp character(15) NOT NULL ,
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS Capteur
     nbreChannel integer  DEFAULT 1,
     active boolean DEFAULT TRUE,
     CONSTRAINT idApparreil FOREIGN KEY (idApparreil)
-    REFERENCES Appareils (id)
+    REFERENCES Appareil (id)
 );
 
 CREATE TABLE IF NOT EXISTS Actionneur
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS Actionneur
     Puissance integer  NOT NULL,
     active boolean DEFAULT TRUE,
     CONSTRAINT idApparreil FOREIGN KEY (idApparreil)
-    REFERENCES Appareils (id)
+    REFERENCES Appareil (id)
 );
 
 CREATE TABLE IF NOT EXISTS Channel

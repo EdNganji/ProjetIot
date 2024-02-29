@@ -51,10 +51,10 @@ public class ListeAppareils {
         
         afficherAppareils();
 
-        System.out.println("Entrez l'id de l'appareil sélectionné");
-		int id = Integer.parseInt(scanner.next()); 
+        System.out.println("Entrez le nom de l'appareil sélectionné");
+		String name = scanner.next(); 
         for (Appareil appareil : appareils) {
-            if (appareil.id == id){
+            if (appareil.name == name){
                 return appareil;
             }
         }

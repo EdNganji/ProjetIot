@@ -28,13 +28,13 @@ public class ListeLectures {
     }
 
     // afficher les noms de tous les lectures de la liste
-    public void afficher() {
+    public void Afficher() {
 
-        System.out.println("id     id capteur   nom capteur   nom channel"
+        System.out.println("id   nom capteur   nom channel"
                             + "   Valeur   date d'envoi   heure d'envoi");
 
         for (Lecture lecture : lectures) {
-            System.out.println(lecture.id + "   " + lecture.idCapteur + "   "
+            System.out.println(lecture.id + "   "
             + lecture.nameCap + "   " + lecture.nameCha + "   " + lecture.readValue
             + "   " + lecture.dateEnvoi + "   " + lecture.heureEnvoi);
         }
