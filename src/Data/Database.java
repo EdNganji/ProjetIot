@@ -15,6 +15,7 @@ import Ressources.*;
  * @author postgresqltutorial.com
  */
 public class Database{
+    
 
     
 
@@ -704,6 +705,43 @@ public class Database{
 
 
      }
+
+     // Lier un channel
+     public long linkChannel(Channel channel, Capteur capteur ) {
+
+        Connection conn = connect.connect2();
+
+         String SQL = "INSERT INTO attributions ( \"idCapteur\", \"idChannel\") "
+                 + "VALUES(?,?)"; 
+         long id = 0;
+
+         try (
+         PreparedStatement pstmt = conn.prepareStatement(SQL,
+                 Statement.RETURN_GENERATED_KEYS)) {
+ 
+             pstmt.setInt(1, capteur.id);
+             pstmt.setInt(2, channel.id);
+            
+ 
+             int affectedRows = pstmt.executeUpdate();
+             // check the affected rows 
+             if (affectedRows > 0) {
+                 // get the ID back
+                 try (ResultSet rs = pstmt.getGeneratedKeys()) {
+                     if (rs.next()) {
+
+                         id = rs.getLong(1);
+                     }
+                 } catch (SQLException ex) {
+                     System.out.println(ex.getMessage());
+                 }
+             }
+         } catch (SQLException ex) {
+             System.out.println(ex.getMessage());
+         }
+         return id;
+     }
+
 
 
        //Enregistrer une Lecture

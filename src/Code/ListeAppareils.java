@@ -3,6 +3,7 @@ package Code;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
 import Data.Database;
 import Ressources.*;
@@ -73,25 +74,44 @@ public class ListeAppareils {
 
         appareil.Infos();
 
+        boolean tag = false;
 		
-		// datab.getAppareil();
-		
-		System.out.println("Entrez le nouveau type d'appareil'");
-		String type = scanner.next();
-		System.out.println("Entrez le nouveau etat de fonctionnement");
-		String etat = scanner.next();
+		String type = "";
+        char etat = ' ';
 
+		
+
+        try{
+        while (tag == false) {
+			System.out.println("Entrez le nouveau type d'appareil'");
+		    type = scanner.next();
+			tag = Validation.validText(type, 25);
+		}
+		
+		tag = false;
+
+		while (tag == false) {
+
+			System.out.print("Etat de fonctionnement( F pour fonctionnel ou N pour non ): ");
+		    etat = scanner.next().charAt(0);
+			tag = Validation.validetat(etat);
+
+		}
+        
 		appareil.type = type;
         appareil.etatFonct = etat;
         
 		
-		 datab.updateValuesApp(appareil);
-
+        datab.updateValuesApp(appareil);
+        
 		appareils.set(position, appareil);
-
+        
 		System.out.println("Valeurs modifiées");
-
+        
 		
+    } catch (InputMismatchException e) {
+        System.out.println("Erreur : Entrée invalide. Assurez-vous d'entrer de bonnes valeurs.");
+    }
 	}
 
 

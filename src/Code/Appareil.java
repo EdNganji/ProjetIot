@@ -3,6 +3,7 @@ package Code;
 import java.util.ArrayList;
 import java.util.List;
 import Ressources.Capteur;
+import Ressources.Channel;
 import Ressources.Actionneur;
 
 
@@ -21,7 +22,7 @@ public class Appareil {
 	public String ipAdress;
     public String name;
     public String type;
-    public String etatFonct;
+    public char etatFonct;
 	
 
 	public Appareil(){
@@ -61,9 +62,9 @@ public class Appareil {
 		tag = false;
 
 		while (tag == false) {
-			System.out.print("Etat de fonctionnement : ");
-			appareil.etatFonct = scanner.next();
-			tag = Validation.validText(appareil.etatFonct, 25);
+			System.out.print("Etat de fonctionnement( F pour fonctionnel ou N pour non ): ");
+			appareil.etatFonct = scanner.next().charAt(0);
+			tag = Validation.validetat(appareil.etatFonct);
 		}
 	} catch (InputMismatchException e) {
 		System.out.println("Erreur : Entrée invalide. Assurez-vous d'entrer un entier.");
@@ -173,40 +174,42 @@ public class Appareil {
 
 		capteur.Infos();
 
-		// datab.getAppareil();
+		try{
+			boolean  tag = false;
+			String type = "";
+			int nbChan = 1;
+
+			
+	
+			while (tag == false) {
+				System.out.println("Entrez le nouveau type de Mesure");
+				type = scanner.next();
+				tag = Validation.validText(type, 25);
+			}
+			
+			tag = false;
+	
+			while (tag == false) {
+				System.out.print("Entrez le nouveau Nombre de valeurs lues : ");
+				nbChan = scanner.nextInt();
+				tag = Validation.validnbr(nbChan, 5);
+			}
+			
+			capteur.typeMesure = type;
+			capteur.nbreChannel  = nbChan;
+			
+			datab.updateValuesCapteur(capteur);
+			
+			listCapteurs.set(position, capteur);
+			
+			System.out.println("Valeurs modifiées");
+			
+		} catch (InputMismatchException e) {
+			System.out.println("Erreur : Entrée invalide. Assurez-vous d'entrer de bonnes valeurs.");
+		}
 		
-		System.out.println("Entrez le nouveau type de Mesure");
-		String type = scanner.next();
-		System.out.println("Entrez le nouveau nombre de channels");
-		int nbChan = scanner.nextInt();
-
-		capteur.typeMesure = type;
-		capteur.nbreChannel  = nbChan;
-		
-		datab.updateValuesCapteur(capteur);
-
-		listCapteurs.set(position, capteur);
-
-		System.out.println("Valeurs modifiées");
-
-		
-	}
-
-	public void linkChannel( Scanner scanner, Capteur capteur, int position, ListeAppareils list) {
-		
-		
-		System.out.println("Entrez l'id du channel à lier'");
-		int id = scanner.nextInt();
-
-		// datab.link(capteur.id, id);
-
-		// Verifier le nombre de channels 
-
-		System.out.println("Entrez le nouveau nombre de channels");
-		
-  
-		// datab.insertvalues( capteur);
-	}
+			
+		}
 	
 
 				// Gestion liste Actionneurs
@@ -261,8 +264,8 @@ public class Appareil {
         return position; 
     }
 
-	//  supprimer un capteur de la liste
-    public void dropAppareil(Actionneur actionneur, Database datab) {
+	//  supprimer un actionneur de la liste
+    public void dropActionneur(Actionneur actionneur, Database datab) {
 
 		datab.dropActionneur(actionneur);
         listActionneurs.remove(actionneur);
@@ -270,27 +273,38 @@ public class Appareil {
 
 
 	public void updateActionneur( Scanner scanner, Actionneur actionneur, int position, Database datab) {
-		System.out.println("\n------------------------------");
 
+			System.out.println("\n------------------------------");
+
+			try{
+				
+				boolean  tag = false;
+				String type = "";
 		
-		// datab.getAppareil();
+				while (tag == false) {
+					System.out.println("Entrez le nouveau type d'Action'");
+					type = scanner.next();
+					tag = Validation.validText(type, 25);
+				}
+				
+				actionneur.typeAction = type;
+				
+				
+				datab.updateValuesActionneur(actionneur);
+				
+				listActionneurs.set(position, actionneur);
+				
+				System.out.println("Valeurs modifiées");
+
+			} catch (InputMismatchException e) {
+				System.out.println("Erreur : Entrée invalide. Assurez-vous d'entrer de bonnes valeurs.");
+			}
+
+		}
 		
-		System.out.println("Entrez le nouveau type d'Action'");
-		String type = scanner.next();
 		
-
-		actionneur.typeAction = type;
-		
-		
-		datab.updateValuesActionneur(actionneur);
-
-		listActionneurs.set(position, actionneur);
-
-		System.out.println("Valeurs modifiées");
-	}
-
-	public void setID(int id){
-
+		public void setID(int id){
+			
         this.id = id;
     }
 

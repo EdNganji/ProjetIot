@@ -50,6 +50,13 @@ public class Channel {
     
     }
 
+    public void Infos() {
+
+		System.out.println(name + "   " + unit + "\n");
+  
+		
+	}
+
 
     
 

@@ -101,6 +101,7 @@ public class App {
                                     System.out.println("2. Afficher tous les capteurs");
                                     System.out.println("3. modifier les informations d'un capteur");
                                     System.out.println("4. Supprimer un capteur");
+                                    System.out.println("5. Lier un channel");
                                     System.out.println("5. Quitter");
 
                                     choice = scanner.nextInt();
@@ -139,6 +140,16 @@ public class App {
                                             break;
 
                                         case 5:
+
+                                        System.out.println("Lier un channel");
+                                        channel = listChan.SelectChannel(scanner);
+
+                                        datab.linkChannel(channel, capteur);
+
+                                            
+                                            break;
+
+                                        case 6:
                                             
                                             break;
                                             
@@ -178,11 +189,18 @@ public class App {
 
                                         case 3:
                                         System.out.println("modifier les informations d'un Actionneur");
+
+                                        actionneur = appareil.SelectActionneur(scanner);
+                                        position2 =  appareil.getPositionA(actionneur);
+                                        appareil.updateActionneur(scanner, actionneur, position2, datab);
                                     
 
-                                            
-
                                         case 4:
+                                        System.out.println("Supprimer un Actionneur");
+
+                                        actionneur = appareil.SelectActionneur(scanner);
+                                        position2 =  appareil.getPositionA(actionneur);
+                                        appareil.dropActionneur(actionneur, datab);
                                         
                                             break;
 
@@ -247,17 +265,26 @@ public class App {
                             case 2:
 
                             System.out.println("Afficher tous les channels");
+
+                            listChan.afficherNomsChannels();
                                 
                                 break;
 
                             case 3:
 
                             System.out.println("modifier les informations d'un channel");
+
+                            channel = listChan.SelectChannel(scanner);
+                            position2 =  listChan.getPosition(channel);
+                            listChan.updateChannel(scanner, channel, position2, datab);
                                 
 
                             case 4:
 
                             System.out.println("Supprimer un channel");
+                            channel = listChan.SelectChannel(scanner);
+                            position2 =  listChan.getPosition(channel);
+                            listChan.dropChannel(channel, datab);
                             
                                 break;
 

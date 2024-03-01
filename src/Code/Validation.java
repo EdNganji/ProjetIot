@@ -69,4 +69,20 @@ public class Validation {
 
     }
 
+    public static boolean validetat ( char  etat) {
+
+        
+       
+
+        // Vérifie que l'ID contient bien 10 caractères
+        if ( etat == 'F' || etat == 'N' ) {
+            
+            return true;
+        } 
+
+
+        return false;
+
+    }
+
 }

@@ -15,10 +15,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import Ressources.*;
+import Data.*;
 
 public class ListeAttente {
 
+    Database datab = new Database();
+
     static class ApiHandler implements HttpHandler {
+        Database datab = new Database();
         private final Queue<Data> queue = new LinkedList<>();
         private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
@@ -76,8 +80,10 @@ public class ListeAttente {
             }
 
             if (data != null) {
-                // Simuler l'envoi de l'objet à la base de données
-                System.out.println("Envoi de l'objet à la base de données : " + data.readValue);
+
+                datab.insertvaluesLecture(data);
+                
+                //System.out.println("Envoi de l'objet à la base de données : " + data.readValue);
             } else {
                 System.out.println("File d'attente vide. Aucun envoi à la base de données.");
             }
