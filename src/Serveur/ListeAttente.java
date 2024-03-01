@@ -7,6 +7,7 @@ import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -32,15 +33,14 @@ public class ListeAttente {
             if ("POST".equals(exchange.getRequestMethod())) {
                 // Récupérer le corps de la requête
                 InputStream requestBody = exchange.getRequestBody();
-                byte[] buffer = new byte[requestBody.available()];
-                requestBody.read(buffer);
+                //byte[] buffer = new byte[requestBody.available()];
+                //requestBody.read(buffer);
 
-                // Convertir les données du corps de la requête en String
-                String requestData = new String(buffer);
-
-                // Convertir le String recu en objet Data
+                
+                InputStreamReader reader = new InputStreamReader(requestBody);
                 Gson gson = new Gson();
-                Data data = gson.fromJson(requestData, Data.class);
+                // Convertir les données du corps de la requête en objet Data
+                Data data = gson.fromJson(reader, Data.class);
 
                 // Ajouter l'objet data à la file d'attente
                 synchronized (queue) {
