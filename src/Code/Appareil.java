@@ -108,11 +108,11 @@ public class Appareil {
 
 
 	// ajouter un capteur à la liste
-    public void addCapteur(Scanner scanner, Capteur capteur, Database datab) {
+    public void addCapteur(Scanner scanner, Capteur capteur, Database datab, int idApp) {
 
 		capteur = capteur.capteurInfo(scanner, capteur);
   
-		 long id = datab.insertvaluesCapteur(capteur,);
+		 long id = datab.insertvaluesCapteur(capteur, idApp);
 
 		 capteur.id = (int) id; 
 
@@ -214,11 +214,11 @@ public class Appareil {
 
 
 	// ajouter un Actionneur à la liste
-    public void addActionneur(Scanner scanner, Actionneur actionneur, Database datab) {
+    public void addActionneur(Scanner scanner, Actionneur actionneur, Database datab, int idApp) {
 
 		actionneur = actionneur.ActionneurInfo(scanner, actionneur);
   
-		 long id = datab.insertvaluesActionneur(actionneur, this.id);
+		 long id = datab.insertvaluesActionneur(actionneur, idApp);
 
 		 actionneur.id = (int) id; 
 

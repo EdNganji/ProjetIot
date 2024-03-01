@@ -28,6 +28,8 @@ public class App {
 
          Actionneur actionneur = new Actionneur(null, null);
 
+         Channel channel = new Channel(null, 0, null);
+
          ListeAppareils listApp = new ListeAppareils();
 
          ListeChannels listChan = new ListeChannels();
@@ -107,7 +109,7 @@ public class App {
                                         case 1:
                                         System.out.println("Ajouter un Capteur");
 
-                                        appareil.addCapteur(scanner, capteur, datab);
+                                        appareil.addCapteur(scanner, capteur, datab, appareil.id);
                                             
                                             
                                             break;
@@ -162,7 +164,7 @@ public class App {
                                         case 1:
                                         System.out.println("Ajouter un Actionneur");
 
-                                        appareil.addActionneur(scanner, actionneur, datab);
+                                        appareil.addActionneur(scanner, actionneur, datab, appareil.id);
                                             
                                             
                                             break;
@@ -237,6 +239,8 @@ public class App {
                             case 1:
                                 
                             System.out.println("Ajouter un channel");
+
+                            listChan.addChannel(scanner, channel, datab);
 
                                 break;
 
