@@ -11,7 +11,7 @@ import Ressources.*;
 
 public class ListeChannels {
 
-    private List<Channel> channels;
+    public List<Channel> channels;
 
     public ListeChannels() {
         channels = new ArrayList<>();
@@ -23,6 +23,12 @@ public class ListeChannels {
         channel = channel.ChannelInfos(scanner, channel);
         long id = datab.insertvaluesChannel(channel);
         channel.id = (int)id;
+        channels.add(channel);
+    }
+
+    // ajouter un channel à la liste
+    public void add(Channel channel) {
+
         channels.add(channel);
     }
 

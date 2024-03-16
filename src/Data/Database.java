@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.sql.PreparedStatement;
 /*import java.sql.ResultSet;*/
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import Code.*;
 import Ressources.*;
@@ -228,7 +230,7 @@ public class Database{
                 pstmt.setString(1, appareil.name);
                 pstmt.setString(2, appareil.ipAdress);
                 pstmt.setString(3, appareil.type);
-                pstmt.setString(4, appareil.etatFonct);
+                pstmt.setString(4, "" + appareil.etatFonct);
     
                 int affectedRows = pstmt.executeUpdate();
                 // check the affected rows 
@@ -249,6 +251,56 @@ public class Database{
             return id;
         }
 
+        //Liste d'appareils
+
+        public ListeAppareils getAppareils() {
+
+            Connection conn = connect.connect2();
+
+            ListeAppareils list = new ListeAppareils();
+    
+    
+            
+    
+            String SQL = "SELECT a.id, a.adresseip , a.name, a.type, a.etatfonct"
+            +  "  FROM appareil a"
+            +   " WHERE a.active = TRUE";
+    
+            try (
+            Statement stmt = conn.createStatement();
+                    ResultSet rs = stmt.executeQuery(SQL)) {
+                // display actor information
+                //displayLectures(rs);
+                list = recordAppareil(rs);
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+
+            return list;
+        }
+
+        public ListeAppareils recordAppareil(ResultSet rs) throws SQLException {
+
+            ListeAppareils list = new ListeAppareils() ;
+            
+            while (rs.next()) {
+                
+                        Appareil appareil = new Appareil();
+                        appareil.id = rs.getInt("id") ;
+                        appareil.ipAdress = rs.getString("adresseip") ;
+                        appareil.name =  rs.getString("name") ;
+                        appareil.type =  rs.getString("type") ;
+                        appareil.etatFonct =  rs.getString("etatfonct").charAt(0); 
+
+                    list.add(appareil);
+            }
+
+            return list;
+        }
+    
+        
+       
+
         //UPdate Data from an apparell
         public long updateValuesApp( Appareil appareil) {
 
@@ -264,7 +316,7 @@ public class Database{
                      Statement.RETURN_GENERATED_KEYS)) {
      
                  pstmt.setString(1, appareil.type);
-                 pstmt.setString(2, appareil.etatFonct);
+                 pstmt.setString(2, "" + appareil.etatFonct);
                  pstmt.setInt(3, appareil.id);
      
                  int affectedRows = pstmt.executeUpdate();
@@ -323,7 +375,7 @@ public class Database{
     //Gestion des Capteurs
 
         // Enregistrer un capteur
-        public long insertvaluesCapteur(Capteur capteur, int idApp) {
+        public long insertvaluesCapteur(Capteur capteur) {
 
             Connection conn = connect.connect2();
  
@@ -336,7 +388,7 @@ public class Database{
                      Statement.RETURN_GENERATED_KEYS)) {
      
                  pstmt.setString(1, capteur.name);
-                 pstmt.setInt(2, idApp);
+                 pstmt.setInt(2, capteur.idApparreil);
                  pstmt.setString(3, capteur.typeMesure);
                  pstmt.setInt(4, capteur.nbreChannel);
      
@@ -358,6 +410,60 @@ public class Database{
              }
              return id;
          }
+
+         
+
+         //Liste de capteurs
+
+
+        public List<Capteur> getCapteurs(int idappareil) {
+
+            List<Capteur> list = new ArrayList<>();
+
+            Connection conn = connect.connect2();
+    
+    
+            
+     
+            String SQL = "SELECT a.id, a.name, a.idappareil ,  a.typemesure, a.nbrechannel"
+            +  "  FROM capteur a"
+            +   " WHERE a.active = TRUE AND a.idappareil = ?";
+    
+            try (
+             PreparedStatement pstmt = conn.prepareStatement(SQL,
+                     Statement.RETURN_GENERATED_KEYS)) {
+     
+                 pstmt.setInt(1, idappareil);
+                // display actor information
+                //displayLectures(rs);
+                ResultSet rs = pstmt.getGeneratedKeys();
+                list = recordCapteur(rs);
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+
+            return list;
+        }
+
+        public List<Capteur> recordCapteur(ResultSet rs) throws SQLException {
+
+            List<Capteur> list = new ArrayList<>(); ;
+            
+            while (rs.next()) {
+                
+                        Capteur capteur = new Capteur(null, null, 0);
+                        capteur.id = rs.getInt("id") ;
+                        capteur.idApparreil = rs.getInt("idappareil") ;
+                        capteur.name =  rs.getString("name") ;
+                        capteur.typeMesure =  rs.getString("typemesure") ;
+                        capteur.nbreChannel =  rs.getInt("nbrechannel"); 
+
+                    list.add(capteur);
+            }
+
+            return list;
+        }
+    
  
          //modifier un capteur 
          public long updateValuesCapteur( Capteur capteur) {
@@ -462,7 +568,7 @@ public class Database{
       //Gestion des Actionneurs
 
         // Enregistrer un actionneur
-        public long insertvaluesActionneur(Actionneur actionneur, int idApp) {
+        public long insertvaluesActionneur(Actionneur actionneur) {
 
             Connection conn = connect.connect2();
  
@@ -475,7 +581,7 @@ public class Database{
                      Statement.RETURN_GENERATED_KEYS)) {
      
                  pstmt.setString(1, actionneur.name);
-                 pstmt.setInt(2, idApp);
+                 pstmt.setInt(2, actionneur.idApparreil);
                  pstmt.setString(3, actionneur.typeAction);
                  pstmt.setInt(4, 0);
      
@@ -497,6 +603,57 @@ public class Database{
              }
              return id;
          }
+
+          //Liste de Actionneurs
+
+
+        public List<Actionneur> getActionneurs(int idappareil) {
+
+            List<Actionneur> list =  new ArrayList<>();
+
+            Connection conn = connect.connect2();
+    
+    
+            
+     
+            String SQL = "SELECT a.id, a.name, a.idappareil ,  a.typeaction, a.puissance"
+            +  "  FROM actionneur a"
+            +   " WHERE a.active = TRUE AND a.idappareil = ?";
+    
+            try (
+             PreparedStatement pstmt = conn.prepareStatement(SQL,
+                     Statement.RETURN_GENERATED_KEYS)) {
+     
+                 pstmt.setInt(1, idappareil);
+                // display actor information
+                //displayLectures(rs);
+                ResultSet rs = pstmt.getGeneratedKeys();
+                list = recordActionneur(rs);
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+
+            return list;
+        }
+
+        public List<Actionneur> recordActionneur(ResultSet rs) throws SQLException {
+
+            List<Actionneur> list = new ArrayList<>(); ;
+            
+            while (rs.next()) {
+                
+                        Actionneur actionneur = new Actionneur(null, null);
+                        actionneur.id = rs.getInt("id") ;
+                        actionneur.idApparreil = rs.getInt("idappareil") ;
+                        actionneur.name =  rs.getString("name") ;
+                        actionneur.typeAction =  rs.getString("typeaction") ;
+                        actionneur.puissance =  rs.getInt("puissance"); 
+
+                    list.add(actionneur);
+            }
+
+            return list;
+        }
  
          //modifier un actionneur 
          public long updateValuesActionneur(Actionneur actionneur) {
@@ -605,6 +762,51 @@ public class Database{
              }
              return id;
          }
+
+          //Liste de Channels
+
+        public ListeChannels getChannels() {
+
+            ListeChannels list = new ListeChannels();
+
+            Connection conn = connect.connect2();
+    
+    
+            
+    
+            String SQL = "SELECT id, name, unit"
+            +  "  FROM channel "
+            +   " WHERE active = TRUE";
+    
+            try (
+            Statement stmt = conn.createStatement();
+                    ResultSet rs = stmt.executeQuery(SQL)) {
+                // display actor information
+                //displayLectures(rs);
+                list = recordChannel(rs);
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+
+            return list;
+        }
+
+        public ListeChannels recordChannel(ResultSet rs) throws SQLException {
+
+            ListeChannels list = new ListeChannels() ;
+            
+            while (rs.next()) {
+                
+                        Channel channel = new Channel(null, 0, null);
+                        channel.id = rs.getInt("id") ;
+                        channel.name =  rs.getString("name") ;
+                        channel.unit =  rs.getString("unit") ;
+
+                        list.add(channel);
+            }
+
+            return list;
+        }
  
          //modifier un channel 
          public long updateValuesChannel(Channel channel) {
@@ -781,20 +983,54 @@ public class Database{
          } 
 
 
-         public ListeLectures getLectures(ListeLectures list) {
+         public ListeLectures getLectures() {
+
+            ListeLectures list = new ListeLectures();
 
             Connection conn = connect.connect2();
     
     
             
     
-            String SQL = "SELECT a.id, a.idcapteur Capteur, b.name, c.name, a.readvalue, a.date_envoi, a.heure_envoi"
+            String SQL = "SELECT a.id, a.idcapteur , b.name Capteur, c.name Channel, a.readvalue, a.date_envoi, a.heure_envoi"
             +  "  FROM Lectures a"
             +  "  INNER JOIN capteur b"
             +  "  ON b.id = a.idcapteur"
             +   " INNER JOIN channel c"
             +   " ON c.id = a.idchannel"
             +   " WHERE a.active = TRUE";
+    
+            try (
+            Statement stmt = conn.createStatement();
+                    ResultSet rs = stmt.executeQuery(SQL)) {
+                // display actor information
+                //displayLectures(rs);
+                list = recordLectures(rs);
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+
+            return list;
+        }
+
+        public ListeLectures getLecturesShort() {
+
+            ListeLectures list = new ListeLectures();
+
+            Connection conn = connect.connect2();
+    
+    
+            
+    
+            String SQL = "SELECT a.id, a.idcapteur , b.name Capteur, c.name Channel, a.readvalue, a.date_envoi, a.heure_envoi"
+            +  "  FROM Lectures a"
+            +  "  INNER JOIN capteur b"
+            +  "  ON b.id = a.idcapteur"
+            +   " INNER JOIN channel c"
+            +   " ON c.id = a.idchannel"
+            + " WHERE a.active = TRUE"
+            + " ORDER BY a.date_envoi DESC, a.heure_envoi DESC"
+            + " LIMIT 20";
     
             try (
             Statement stmt = conn.createStatement();
@@ -826,16 +1062,16 @@ public class Database{
         public ListeLectures recordLectures(ResultSet rs) throws SQLException {
 
             ListeLectures list = new ListeLectures() ;
-            Lecture lecture = new Lecture();
-
+            
             while (rs.next()) {
-
+                
+                        Lecture lecture = new Lecture();
                         lecture.id = rs.getInt("id") ;
-                        lecture.nameCap = rs.getString("nom capteur") ;
-                        lecture.nameCha =  rs.getString("nom channel") ;
-                        lecture.readValue =  rs.getDouble("Valeur") ;
-                        lecture.dateEnvoi =  rs.getDate("date d'envoi") ;
-                        lecture.heureEnvoi =  rs.getTime("heure d'envoi");
+                        lecture.nameCap = rs.getString("Capteur") ;
+                        lecture.nameCha =  rs.getString("Channel") ;
+                        lecture.readValue =  rs.getDouble("readvalue") ;
+                        lecture.dateEnvoi =  rs.getDate("date_envoi") ;
+                        lecture.heureEnvoi =  rs.getTime("heure_envoi");
 
                     list.addLectures(lecture);
             }

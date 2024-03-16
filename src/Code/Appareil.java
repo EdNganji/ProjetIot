@@ -3,7 +3,6 @@ package Code;
 import java.util.ArrayList;
 import java.util.List;
 import Ressources.Capteur;
-import Ressources.Channel;
 import Ressources.Actionneur;
 
 
@@ -113,7 +112,7 @@ public class Appareil {
 
 		capteur = capteur.capteurInfo(scanner, capteur);
   
-		 long id = datab.insertvaluesCapteur(capteur, idApp);
+		 long id = datab.insertvaluesCapteur(capteur);
 
 		 capteur.id = (int) id; 
 
@@ -221,7 +220,7 @@ public class Appareil {
 
 		actionneur = actionneur.ActionneurInfo(scanner, actionneur);
   
-		 long id = datab.insertvaluesActionneur(actionneur, idApp);
+		 long id = datab.insertvaluesActionneur(actionneur);
 
 		 actionneur.id = (int) id; 
 

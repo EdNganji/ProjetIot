@@ -9,7 +9,7 @@ import Data.Database;
 import Ressources.*;
 
 public class ListeAppareils {
-    private List<Appareil> appareils;
+    public List<Appareil> appareils;
 
     public ListeAppareils() {
         appareils = new ArrayList<>();
@@ -25,6 +25,12 @@ public class ListeAppareils {
 		appareil.id = (int) id;
 
 		// Ensuite on recupere l'id et on l'enregistre
+        appareils.add(appareil);
+    }
+
+    // ajouter un appareil à la liste
+    public void add(Appareil appareil) {
+
         appareils.add(appareil);
     }
 

@@ -304,7 +304,7 @@ public class App {
                         System.out.println("1. Consulter les lectures");
                         System.out.println("2. Quitter");
                         
-                        listeLec = datab.getLectures(listeLec);
+                        listeLec = datab.getLectures();
 
                         choice = scanner.nextInt();
             

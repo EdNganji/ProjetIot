@@ -6,7 +6,7 @@ import Ressources.*;
 
 public class ListeLectures {
 
-    private List<Lecture> lectures;
+    public List<Lecture> lectures;
 
     public ListeLectures() {
         lectures = new ArrayList<>();
