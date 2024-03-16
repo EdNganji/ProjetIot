@@ -13,6 +13,7 @@ import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import com.sun.net.httpserver.Headers;
 
 
 
@@ -43,7 +44,22 @@ public class Convert {
 
     static class ApiHandler implements HttpHandler {
         @Override
-        public void handle(HttpExchange exchange) throws IOException {
+        public void handle(HttpExchange exchange) throws IOException {// Allow pre-flight requests
+
+            if (exchange.getRequestMethod().equalsIgnoreCase("OPTIONS")) {
+                Headers headers = exchange.getResponseHeaders();
+                headers.add("Access-Control-Allow-Origin", "*"); // Allow requests from any origin
+                headers.add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+                headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization");
+                exchange.sendResponseHeaders(204, -1);
+            } else {
+                // Set CORS headers for regular requests
+                Headers headers = exchange.getResponseHeaders();
+                headers.add("Access-Control-Allow-Origin", "*"); // Allow requests from any origin
+                headers.add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+                headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization");
+
+
             // Vérifier la méthode de la requête (doit être POST)
             if ("POST".equals(exchange.getRequestMethod())) {
                 // Récupérer le corps de la requête
@@ -80,6 +96,8 @@ public class Convert {
                 exchange.sendResponseHeaders(405, -1);
             }
         }
+
+    }
 
         
     }

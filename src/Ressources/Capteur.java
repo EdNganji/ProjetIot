@@ -62,7 +62,7 @@ public class Capteur extends Composante {
 	
 	public void Infos() {
 
-		System.out.println(name + "  "  + typeMesure + "  " + nbreChannel + "\n");
+		System.out.println(this.name + "  "  + typeMesure + "  " + nbreChannel + "\n");
   
 		
 	}

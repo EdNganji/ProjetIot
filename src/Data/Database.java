@@ -416,7 +416,7 @@ public class Database{
          //Liste de capteurs
 
 
-        public List<Capteur> getCapteurs(int idappareil) {
+        public List<Capteur> getCapteurs() {
 
             List<Capteur> list = new ArrayList<>();
 
@@ -425,18 +425,18 @@ public class Database{
     
             
      
-            String SQL = "SELECT a.id, a.name, a.idappareil ,  a.typemesure, a.nbrechannel"
-            +  "  FROM capteur a"
-            +   " WHERE a.active = TRUE AND a.idappareil = ?";
+            String SQL = "SELECT id, name, idapparreil ,  typemesure, nbrechannel"
+            +  "  FROM capteur "
+            +   " WHERE active = true";
     
             try (
-             PreparedStatement pstmt = conn.prepareStatement(SQL,
-                     Statement.RETURN_GENERATED_KEYS)) {
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(SQL)) {
      
-                 pstmt.setInt(1, idappareil);
+                
                 // display actor information
                 //displayLectures(rs);
-                ResultSet rs = pstmt.getGeneratedKeys();
+                
                 list = recordCapteur(rs);
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
@@ -453,7 +453,7 @@ public class Database{
                 
                         Capteur capteur = new Capteur(null, null, 0);
                         capteur.id = rs.getInt("id") ;
-                        capteur.idApparreil = rs.getInt("idappareil") ;
+                        capteur.idApparreil = rs.getInt("idapparreil") ;
                         capteur.name =  rs.getString("name") ;
                         capteur.typeMesure =  rs.getString("typemesure") ;
                         capteur.nbreChannel =  rs.getInt("nbrechannel"); 
@@ -607,7 +607,7 @@ public class Database{
           //Liste de Actionneurs
 
 
-        public List<Actionneur> getActionneurs(int idappareil) {
+        public List<Actionneur> getActionneurs() {
 
             List<Actionneur> list =  new ArrayList<>();
 
@@ -618,16 +618,16 @@ public class Database{
      
             String SQL = "SELECT a.id, a.name, a.idappareil ,  a.typeaction, a.puissance"
             +  "  FROM actionneur a"
-            +   " WHERE a.active = TRUE AND a.idappareil = ?";
+            +   " WHERE a.active = TRUE";
     
             try (
-             PreparedStatement pstmt = conn.prepareStatement(SQL,
-                     Statement.RETURN_GENERATED_KEYS)) {
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(SQL)) {
      
-                 pstmt.setInt(1, idappareil);
+                
                 // display actor information
                 //displayLectures(rs);
-                ResultSet rs = pstmt.getGeneratedKeys();
+                
                 list = recordActionneur(rs);
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
@@ -1083,7 +1083,16 @@ public class Database{
         
 
     public static void main(String[] args) {
-       // Database main = new Database();
+        Database main = new Database();
+
+        ListeChannels list = new ListeChannels();
+
+        list = main.getChannels();
+
+        for (Channel channel : list.channels) {
+             channel.Infos();
+        }
+
 
         // main.getAppareil();
 

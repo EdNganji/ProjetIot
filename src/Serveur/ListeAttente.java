@@ -404,19 +404,15 @@ public class ListeAttente {
                         // Get query parameters if needed
                 //String query = exchange.getRequestURI().getQuery();
 
-                Map<String, String> params = queryToMap(exchange.getRequestURI().getQuery());
-        
-                // Récupérer la valeur du paramètre "id"
-                 int idappareil = Integer.parseInt(params.get("id"));
-
                 
                 // Initialiser Gson
                  Gson gson = new Gson();
 
-                 list = datab.getCapteurs(idappareil);
+                 list = datab.getCapteurs();
 
                 // Convertir l'ArrayList en JSON
                 String json = gson.toJson(list);
+
 
                 
                 // Respond with a simple message
@@ -433,22 +429,6 @@ public class ListeAttente {
         }
         }
 
-        // Méthode utilitaire pour convertir les paramètres de requête en Map
-    private Map<String, String> queryToMap(String query) {
-        Map<String, String> result = new java.util.HashMap<>();
-        if (query != null) {
-            String[] params = query.split("&");
-            for (String param : params) {
-                String[] pair = param.split("=");
-                if (pair.length >= 2) {
-                    String key = pair[0];
-                    String value = pair[1];
-                    result.put(key, value);
-                }
-            }
-        }
-        return result;
-    }
     }
 
     // Handler pour la mise à jour d'un capteur
@@ -642,15 +622,14 @@ public class ListeAttente {
                         // Get query parameters if needed
                 //String query = exchange.getRequestURI().getQuery();
 
-                Map<String, String> params = queryToMap(exchange.getRequestURI().getQuery());
+                
         
-                // Récupérer la valeur du paramètre "id"
-                 int idappareil = Integer.parseInt(params.get("id"));
+                
 
                  // Initialiser Gson
                  Gson gson = new Gson();
                  
-                 list = datab.getActionneurs(idappareil);
+                 list = datab.getActionneurs();
                  
 
                 // Convertir l'ArrayList en JSON
@@ -671,22 +650,7 @@ public class ListeAttente {
         }
         }
 
-         // Méthode utilitaire pour convertir les paramètres de requête en Map
-    private Map<String, String> queryToMap(String query) {
-        Map<String, String> result = new java.util.HashMap<>();
-        if (query != null) {
-            String[] params = query.split("&");
-            for (String param : params) {
-                String[] pair = param.split("=");
-                if (pair.length >= 2) {
-                    String key = pair[0];
-                    String value = pair[1];
-                    result.put(key, value);
-                }
-            }
-        }
-        return result;
-    }
+         
     }
 
     // Handler pour la mise à jour d'un Actionneur
@@ -880,7 +844,7 @@ public class ListeAttente {
                         // Get query parameters if needed
                 //String query = exchange.getRequestURI().getQuery();
 
-                list = datab.getChannels();
+                
                 // Initialiser Gson
                  Gson gson = new Gson();
 
@@ -1134,10 +1098,10 @@ public class ListeAttente {
         server.createContext("/api/capteur/get", new GetCapHandler());
         server.createContext("/api/capteur/update", new UpdateCapHandler());
         server.createContext("/api/capteur/drop", new DropCapHandler());
-        server.createContext("/api/actuateur", new CreateActHandler());
-        server.createContext("/api/actuateur/get", new GetActHandler());
-        server.createContext("/api/actuateur/update", new UpdateActHandler());
-        server.createContext("/api/actuateur/drop", new DropActHandler());
+        server.createContext("/api/actionneur", new CreateActHandler());
+        server.createContext("/api/actionneur/get", new GetActHandler());
+        server.createContext("/api/actionneur/update", new UpdateActHandler());
+        server.createContext("/api/actionneur/drop", new DropActHandler());
         server.createContext("/api/channel", new CreateChaHandler());
         server.createContext("/api/channel/get", new GetChaHandler());
         server.createContext("/api/channel/update", new UpdateChaHandler());
